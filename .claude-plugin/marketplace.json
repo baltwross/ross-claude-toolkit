@@ -1,0 +1,14 @@
+{
+  "name": "ross-claude-toolkit",
+  "description": "Cross-project skills and agents for Claude Code",
+  "plugins": [
+    {
+      "name": "ross-claude-toolkit",
+      "description": "Research workflows, code optimization, documentation management, adversarial plan review, and more.",
+      "source": {
+        "source": "github",
+        "repo": "baltwross/ross-claude-toolkit"
+      }
+    }
+  ]
+}
