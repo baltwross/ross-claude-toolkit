@@ -1,6 +1,10 @@
 {
   "name": "ross-claude-toolkit",
   "description": "Cross-project skills and agents for Claude Code",
+  "owner": {
+    "name": "baltwross",
+    "url": "https://github.com/baltwross"
+  },
   "plugins": [
     {
       "name": "ross-claude-toolkit",
