@@ -5,7 +5,7 @@ Cross-project skills and agents for Claude Code. Includes systematic research wo
 ## Installation
 
 ```
-/plugin install github:rossbaltimore/ross-claude-toolkit
+/plugin install github:baltwross/ross-claude-toolkit
 ```
 
 For global installation (available in all projects):
@@ -55,7 +55,7 @@ The research skill references these MCP tools. They are **not required** but enh
 ## Updating
 
 ```
-/plugin update ross-claude-toolkit
+/plugin update baltwross/ross-claude-toolkit
 ```
 
 ## License

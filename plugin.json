@@ -2,8 +2,8 @@
   "name": "ross-claude-toolkit",
   "version": "1.0.0",
   "description": "Cross-project skills and agents: systematic research workflows, code optimization, documentation management, adversarial plan review, and more.",
-  "author": "rossbaltimore",
-  "homepage": "https://github.com/rossbaltimore/ross-claude-toolkit",
+  "author": "baltwross",
+  "homepage": "https://github.com/baltwross/ross-claude-toolkit",
   "license": "MIT",
   "skills": [
     {
