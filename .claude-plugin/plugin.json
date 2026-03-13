@@ -1,65 +1,8 @@
 {
   "name": "ross-claude-toolkit",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Cross-project skills and agents: systematic research workflows, code optimization, documentation management, adversarial plan review, and more.",
-  "author": "baltwross",
-  "homepage": "https://github.com/baltwross/ross-claude-toolkit",
-  "license": "MIT",
-  "skills": [
-    {
-      "name": "research",
-      "path": "skills/research/SKILL.md",
-      "description": "Systematic 9-step research workflow that produces documented, reproducible findings with codebase analysis, acceptance criteria, and structured recommendations.",
-      "auto_enable": true
-    },
-    {
-      "name": "frontier-model-landscape",
-      "path": "skills/frontier-model-landscape/SKILL.md",
-      "description": "Up-to-date reference for frontier AI models from OpenAI, Anthropic, and Google: model IDs, capabilities, context windows, pricing, benchmarks, and modality support.",
-      "auto_enable": true
-    },
-    {
-      "name": "model-api-parameter-reference",
-      "path": "skills/model-api-parameter-reference/SKILL.md",
-      "description": "API parameter reference for OpenAI, Anthropic, and Google models: valid parameter values per model, feature support matrices, reasoning controls, and common gotchas.",
-      "auto_enable": true
-    }
-  ],
-  "agents": [
-    {
-      "name": "claude-code-optimizer",
-      "path": "agents/claude-code-optimizer.md",
-      "description": "Analyze and optimize Claude Code setup, configuration, and agentic coding workflows"
-    },
-    {
-      "name": "conversational-insights",
-      "path": "agents/conversational-insights.md",
-      "description": "Capture and document key insights from conversation threads into structured docs"
-    },
-    {
-      "name": "docs-manager",
-      "path": "agents/docs-manager.md",
-      "description": "Create, update, analyze, and maintain project documentation"
-    },
-    {
-      "name": "red-team-analyst",
-      "path": "agents/red-team-analyst.md",
-      "description": "Adversarial review of plans, proposals, and implementation strategies before execution"
-    },
-    {
-      "name": "research-conductor",
-      "path": "agents/research-conductor.md",
-      "description": "Expert research analysis on topics, concepts, technologies, and questions"
-    },
-    {
-      "name": "skills-architect",
-      "path": "agents/skills-architect.md",
-      "description": "Create and organize Claude Skills configurations following official patterns"
-    },
-    {
-      "name": "tech-research-analyst",
-      "path": "agents/tech-research-analyst.md",
-      "description": "In-depth technical research on frameworks, tools, SDKs, and APIs"
-    }
-  ]
+  "author": {
+    "name": "baltwross"
+  }
 }

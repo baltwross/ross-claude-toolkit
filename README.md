@@ -21,6 +21,7 @@ Cross-project skills and agents for Claude Code. Includes systematic research wo
 | Skill | Description |
 |-------|-------------|
 | **research** | Systematic 9-step research workflow that produces documented findings in `docs/research/`. Includes codebase analysis, acceptance criteria, and structured recommendations. |
+| **red-team-loop** | Iterative plan-hardening loop: Red Team Analyst critiques a plan, main thread evaluates findings with evidence, revises where warranted, and repeats until solid. Use after `/research` or any planning phase. |
 
 ### Agents
 
@@ -36,14 +37,31 @@ Cross-project skills and agents for Claude Code. Includes systematic research wo
 
 ## Usage
 
-After installation, skills and agents are available automatically.
+### Agents
 
-**Invoke the research skill:**
+Agents are used **automatically** by Claude Code when their descriptions match the task at hand. For example, asking Claude to "review this plan for problems" will invoke the red-team-analyst agent. You can also invoke them explicitly by @mentioning them (e.g., `@red-team-analyst`).
+
+### Skills
+
+Skills must be copied to a location where Claude Code can discover them for `/slash-command` invocation.
+
+**Option A: Personal skills directory** (available in all projects):
+```bash
+cp -r skills/<skill-name> ~/.claude/skills/<skill-name>
+```
+
+**Option B: Project skills directory** (available only in that project):
+```bash
+cp -r skills/<skill-name> <your-project>/.claude/skills/<skill-name>
+```
+
+Then invoke with:
 ```
 /research OAuth 2.0 libraries for Node.js
+/red-team-loop docs/research/my-plan.md
 ```
 
-**Agents are used automatically** by Claude Code when their descriptions match the task at hand. For example, asking Claude to "review this plan for problems" will invoke the red-team-analyst agent.
+> **Note:** Plugin-namespaced invocation (e.g., `/ross-claude-toolkit:research`) is not currently supported. Skills must be copied to a personal or project skills directory to be invocable via `/slash-command`.
 
 ## Optional MCP Server Dependencies
 

@@ -5,7 +5,7 @@ description: Use when discussing, selecting, comparing, or recommending AI model
 
 # Frontier Model Landscape
 
-_Status: February 28, 2026_
+_Status: March 5, 2026_
 
 A comprehensive, vendor-agnostic reference covering frontier large language models from OpenAI, Anthropic, and Google DeepMind. This document covers capabilities, pricing, context windows, modalities, reasoning controls, latency characteristics, and API features.
 
@@ -24,9 +24,86 @@ A comprehensive, vendor-agnostic reference covering frontier large language mode
 
 ## 1. OpenAI
 
-### 1.1 GPT-5.2 Series
+### 1.1 GPT-5.4 Series (NEW -- March 5, 2026)
 
-GPT-5.2, released December 2025, is OpenAI's flagship reasoning model family. It ships in several variants optimized for different use cases.
+GPT-5.4 is OpenAI's most capable frontier model, released March 5, 2026. It unifies the Codex and GPT model lines into a single system. Ships as two API variants: Thinking and Pro. Key highlights include OpenAI's first 1M+ token context window, native computer use, and a new Tool Search API feature.
+
+#### GPT-5.4 (Thinking)
+
+| Property | Value |
+|----------|-------|
+| **Model ID** | `gpt-5.4` |
+| **Release Date** | March 5, 2026 |
+| **Replaces** | `gpt-5.2` (retiring June 5, 2026) |
+| **Context Window** | 1,050,000 tokens (922K input + 128K output) |
+| **Max Output** | 128,000 tokens |
+| **Knowledge Cutoff** | August 2025 (assumed, not yet explicitly confirmed for 5.4) |
+| **Input Modalities** | Text, images (up to 10.24M pixels) |
+| **Output Modalities** | Text |
+| **Pricing (per 1M tokens)** | Input: $2.50 / Cached: $0.25 / Output: $15.00 |
+| **Long Context (>272K input)** | Input: $5.00 / Output: $22.50 |
+
+**Key capabilities:**
+
+- Adaptive reasoning that scales compute to task complexity
+- Reasoning effort control: `none`, `low`, `medium`, `high`, `xhigh`
+- Reasoning summary support (`auto`, `concise`, `detailed`)
+- Verbosity control: `low`, `medium`, `high` (estimated, matching GPT-5.2 pattern)
+- Structured outputs via `responses.parse()` (estimated, matching GPT-5.2 pattern)
+- Function/tool calling
+- Streaming with token-level updates
+- Prompt caching with 24-hour retention (10x cost reduction on cached tokens)
+- MCP (Model Context Protocol) tool support
+- **Native computer use** (first general-purpose OpenAI model with this capability)
+- **Tool Search API** -- new `tool_search` tool type for efficient tool management; 47% token reduction in multi-tool systems
+- Upfront planning in Thinking mode -- model provides visible plan, user can adjust mid-response
+- No temperature or top_p support (reasoning model constraint)
+
+**Benchmarks:**
+
+- GDPval: 83.0% (vs GPT-5.2: 70.9%)
+- OSWorld-Verified: 75.0% (vs GPT-5.2: 47.3%, surpasses human 72.4%)
+- ARC-AGI-2: 73.3% (vs GPT-5.2: 52.9%)
+- SWE-Bench Pro: 57.7% (vs GPT-5.2: 55.6%)
+- Terminal-Bench 2.0: 75.1% (vs GPT-5.2: 62.2%)
+- GPQA Diamond: 92.8% (vs GPT-5.2: 92.4%)
+- BrowseComp: 82.7% (vs GPT-5.2: 65.8%)
+- 33% fewer false claims, 18% fewer erroneous responses vs GPT-5.2
+
+#### GPT-5.4 Pro
+
+| Property | Value |
+|----------|-------|
+| **Model ID** | `gpt-5.4-pro` |
+| **Release Date** | March 5, 2026 |
+| **Replaces** | `gpt-5.2-pro` |
+| **Context Window** | 1,050,000 tokens |
+| **Max Output** | 128,000 tokens |
+| **Pricing (per 1M tokens)** | Input: $30.00 / Output: $180.00 |
+| **Long Context (>272K input)** | Input: $60.00 / Output: $270.00 |
+
+**Key characteristics:**
+
+- Maximum reasoning depth with extended thinking time
+- **Responses API only** (estimated, matching GPT-5.2 Pro pattern)
+- Reasoning effort: `medium`, `high`, `xhigh` (estimated, matching GPT-5.2 Pro pattern)
+- Some requests may take several minutes
+- Does NOT support structured `responses.parse()` (estimated, matching GPT-5.2 Pro pattern)
+- Supports reasoning summary and verbosity (estimated)
+- Native computer use and Tool Search API
+
+**Benchmarks:**
+
+- ARC-AGI-2: 83.3% (vs GPT-5.2 Pro: 54.2%)
+- GPQA Diamond: 94.4% (vs GPT-5.2 Pro: 93.2%)
+- BrowseComp: 89.3% (vs GPT-5.2 Pro: 77.9%)
+- Humanity's Last Exam (with tools): 58.7% (vs GPT-5.2 Pro: 50.0%)
+
+---
+
+### 1.2 GPT-5.2 Series
+
+GPT-5.2, released December 2025, is OpenAI's previous flagship reasoning model family. It ships in several variants optimized for different use cases. **Retiring June 5, 2026.**
 
 #### GPT-5.2 (Thinking)
 
@@ -109,7 +186,7 @@ GPT-5.2, released December 2025, is OpenAI's flagship reasoning model family. It
 
 ---
 
-### 1.2 GPT-5.3 Codex Series (NEW -- February 2026)
+### 1.3 GPT-5.3 Codex Series (February 2026)
 
 #### GPT-5.3 Codex
 
@@ -157,7 +234,7 @@ GPT-5.2, released December 2025, is OpenAI's flagship reasoning model family. It
 
 ---
 
-### 1.3 GPT-5 Mini and Nano
+### 1.4 GPT-5 Mini and Nano
 
 #### GPT-5 Mini
 
@@ -198,7 +275,7 @@ GPT-5.2, released December 2025, is OpenAI's flagship reasoning model family. It
 
 ---
 
-### 1.4 GPT-5.1 Series (Previous Generation)
+### 1.5 GPT-5.1 Series (Previous Generation)
 
 | Model | Model ID | Pricing (Input/Output per 1M) | Reasoning Effort | Notes |
 |-------|----------|-------------------------------|------------------|-------|
@@ -210,7 +287,7 @@ GPT-5.2, released December 2025, is OpenAI's flagship reasoning model family. It
 
 ---
 
-### 1.5 Realtime Models
+### 1.6 Realtime Models
 
 #### gpt-realtime-2025-08-28
 
@@ -246,10 +323,13 @@ A lighter-weight realtime model variant for cost-sensitive voice applications.
 
 ---
 
-### 1.6 Deprecated OpenAI Models
+### 1.7 Deprecated OpenAI Models
 
 | Model | Status | Replacement |
 |-------|--------|-------------|
+| `gpt-5.2` | Retiring June 5, 2026 | `gpt-5.4` |
+| `gpt-5.2-pro` | Retiring June 5, 2026 | `gpt-5.4-pro` |
+| `gpt-5.2-chat-latest` | Retiring June 3, 2026 | `gpt-5.3-chat-latest` |
 | `codex-mini-latest` | Deprecated | `gpt-5.2-codex` / `gpt-5.1-codex-mini` |
 | `gpt-4o-realtime-preview` | Legacy | `gpt-realtime-2025-08-28` |
 
@@ -567,18 +647,22 @@ Audio tokens for Live API are measured at 25 tokens per second. Pricing follows 
 
 ### 4.1 Flagship Models
 
-| Property | GPT-5.2 | Claude Opus 4.6 | Gemini 3.1 Pro Preview |
+| Property | GPT-5.4 | Claude Opus 4.6 | Gemini 3.1 Pro Preview |
 |----------|---------|-----------------|------------------------|
-| **Input Price** | $1.75 | $5.00 | $2.00 |
-| **Output Price** | $14.00 | $25.00 | $12.00 |
-| **Context Window** | 400K | 200K (1M beta) | 1M |
+| **Input Price** | $2.50 | $5.00 | $2.00 |
+| **Output Price** | $15.00 | $25.00 | $12.00 |
+| **Context Window** | 1.05M | 200K (1M beta) | 1M |
 | **Max Output** | 128K | 128K | 64K |
 | **Knowledge Cutoff** | Aug 2025 | -- | Jan 2025 |
 | **Reasoning Control** | none-xhigh | low-max | low/medium/high |
-| **Structured Outputs** | Yes | Yes | Yes |
+| **Structured Outputs** | Yes* | Yes | Yes |
 | **Native Audio Input** | No (Realtime model) | No | Yes |
 | **Native Video Input** | No | No | Yes |
-| **Native Image Input** | Yes | Yes | Yes |
+| **Native Image Input** | Yes (10.24M px) | Yes | Yes |
+| **Computer Use** | Yes (native) | Yes | No |
+| **Tool Search** | Yes (47% token reduction) | No | No |
+
+*Estimated, matching GPT-5.2 pattern.
 
 ### 4.2 Mid-Tier / Cost-Efficient Models
 
@@ -620,6 +704,8 @@ Audio tokens for Live API are measured at 25 tokens per second. Pricing follows 
 
 | Model | Text In | Text Out | Image In | Image Out | Audio In | Audio Out | Video In | Video Out |
 |-------|---------|----------|----------|-----------|----------|-----------|----------|-----------|
+| GPT-5.4 | Yes | Yes | Yes | No | No | No | No | No |
+| GPT-5.4 Pro | Yes | Yes | Yes | No | No | No | No | No |
 | GPT-5.2 | Yes | Yes | Yes | No | No | No | No | No |
 | GPT-5.3 Codex | Yes | Yes | Yes | No | No | No | No | No |
 | GPT-5.3 Codex Spark | Yes | Yes | No | No | No | No | No | No |
@@ -645,6 +731,10 @@ Audio tokens for Live API are measured at 25 tokens per second. Pricing follows 
 | Model | Input | Cached Input | Output | Batch Input | Batch Output |
 |-------|-------|-------------|--------|-------------|--------------|
 | **OpenAI** | | | | | |
+| GPT-5.4 | $2.50 | $0.25 | $15.00 | $1.25 | $7.50 |
+| GPT-5.4 (>272K) | $5.00 | -- | $22.50 | -- | -- |
+| GPT-5.4 Pro | $30.00 | -- | $180.00 | $15.00 | $90.00 |
+| GPT-5.4 Pro (>272K) | $60.00 | -- | $270.00 | -- | -- |
 | GPT-5.2 / 5.2 Codex / 5.3 Codex | $1.75 | $0.175 | $14.00 | -- | -- |
 | GPT-5.2 Pro | $21.00 | -- | $168.00 | -- | -- |
 | GPT-5 Mini | $0.25 | $0.025 | $2.00 | -- | -- |
@@ -680,18 +770,21 @@ A practical comparison of what a typical heavy request costs:
 | GPT-5 Mini | $0.45 |
 | Gemini 3 Flash | $0.80 |
 | Claude Haiku 4.5 | $1.50 |
+| GPT-5.4 | $4.00 |
 | GPT-5.2 | $3.15 |
 | Gemini 3.1 Pro (<=200K) | $3.20 |
 | Claude Sonnet 4.6 | $4.50 |
 | Claude Opus 4.6 | $7.50 |
 | Gemini 3.1 Pro (>200K) | $5.80 |
 | GPT-5.2 Pro | $37.80 |
+| GPT-5.4 Pro | $48.00 |
 
 ---
 
 ## Notes
 
-- All pricing is in USD and reflects publicly available API pricing as of February 28, 2026.
+- All pricing is in USD and reflects publicly available API pricing as of March 5, 2026.
+- GPT-5.4 has a long context pricing tier: prompts exceeding 272K input tokens are charged at 2x input and 1.5x output for the full session.
 - "Context Window" refers to the maximum input token capacity.
 - Google Gemini models with tiered pricing (<=200K / >200K) charge the higher rate for ALL tokens once the input exceeds 200K.
 - Anthropic's 1M context window for Opus 4.6 and Sonnet 4.6 is in beta and available only to Tier 4 organizations.

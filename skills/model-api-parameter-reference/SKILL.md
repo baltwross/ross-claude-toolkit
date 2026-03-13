@@ -5,7 +5,7 @@ description: Use when writing code that calls AI model APIs (OpenAI, Anthropic, 
 
 # Model API Parameter Reference
 
-_Status: February 28, 2026_
+_Status: March 5, 2026_
 
 A vendor-agnostic reference covering API parameters, supported controls per model, pricing quick-reference tables, and practical gotchas for frontier models from OpenAI, Anthropic, and Google DeepMind.
 
@@ -45,7 +45,7 @@ OpenAI offers two primary HTTP APIs for text generation:
 | `top_p` | float (0-1) | Nucleus sampling | **None of the GPT-5.x reasoning models** -- returns 400 error |
 | `max_output_tokens` | int | Maximum output tokens | `gpt-5.2-chat-latest` only. Other reasoning models reject this. |
 
-**Important:** All GPT-5.x reasoning models (GPT-5.2, 5.2 Codex, 5.2 Pro, 5.3 Codex, 5-Mini, 5-Nano) reject `temperature` and `top_p` with a 400 "Unsupported parameter" error. This is a fundamental constraint of reasoning models.
+**Important:** All GPT-5.x reasoning models (GPT-5.4, 5.4 Pro, 5.2, 5.2 Codex, 5.2 Pro, 5.3 Codex, 5-Mini, 5-Nano) reject `temperature` and `top_p` with a 400 "Unsupported parameter" error. This is a fundamental constraint of reasoning models.
 
 #### Reasoning Parameters (Responses API)
 
@@ -58,6 +58,8 @@ OpenAI offers two primary HTTP APIs for text generation:
 
 | Model | Valid Values | Default |
 |-------|-------------|---------|
+| GPT-5.4 | `none`, `low`, `medium`, `high`, `xhigh` | `medium` |
+| GPT-5.4 Pro | `medium`, `high`, `xhigh` (estimated) | `high` |
 | GPT-5.2 / 5.2-2025-12-11 | `none`, `low`, `medium`, `high`, `xhigh` | `medium` |
 | GPT-5.2 Codex | `low`, `medium`, `high`, `xhigh` | `medium` |
 | GPT-5.2 Pro | `medium`, `high`, `xhigh` | `high` |
@@ -72,6 +74,7 @@ OpenAI offers two primary HTTP APIs for text generation:
 **Valid `reasoning.summary` values:** `auto`, `concise`, `detailed`
 
 **Models that support `reasoning.summary`:**
+- GPT-5.4, GPT-5.4 Pro
 - GPT-5.2 (all variants except Codex)
 - GPT-5.2 Pro
 - GPT-5 Mini, GPT-5 Nano
@@ -91,6 +94,7 @@ OpenAI offers two primary HTTP APIs for text generation:
 **Valid `verbosity` values:** `low`, `medium`, `high`
 
 **Models that support verbosity:**
+- GPT-5.4, GPT-5.4 Pro (estimated)
 - GPT-5.2 (Thinking variant), GPT-5.2-2025-12-11
 - GPT-5.2 Pro
 - GPT-5 Mini, GPT-5 Nano
@@ -108,12 +112,14 @@ OpenAI offers two primary HTTP APIs for text generation:
 | `text_format` | object | Schema for structured outputs via `responses.parse()` |
 
 **Models that support `responses.parse()`:**
+- GPT-5.4 (estimated)
 - GPT-5.2 (Thinking), GPT-5.2-2025-12-11
 - GPT-5.2 Codex, GPT-5.3 Codex
 - GPT-5.1 Codex Mini, GPT-5.1 Codex, GPT-5.1 Codex Max
 - GPT-5 Mini, GPT-5 Nano
 
 **Models that do NOT support `responses.parse()`:**
+- GPT-5.4 Pro (estimated)
 - GPT-5.2 Chat Latest (requires `json_object` mode instead)
 - GPT-5.2 Pro
 
@@ -121,6 +127,8 @@ OpenAI offers two primary HTTP APIs for text generation:
 
 | Model | Temp | TopP | MaxTokens | Effort | Summary | Verbosity | Structured Parse |
 |-------|------|------|-----------|--------|---------|-----------|------------------|
+| gpt-5.4 | No | No | No | none-xhigh | Yes | Yes* | Yes* |
+| gpt-5.4-pro | No | No | No | medium-xhigh* | Yes | Yes* | No* |
 | gpt-5.2 | No | No | No | none-xhigh | Yes | Yes | Yes |
 | gpt-5.2-chat-latest | No | No | Yes | No | Yes | No | No |
 | gpt-5.2-2025-12-11 | No | No | No | none-xhigh | Yes | Yes | Yes |
@@ -132,6 +140,8 @@ OpenAI offers two primary HTTP APIs for text generation:
 | gpt-5.1 | No | No | No | low-high | Yes | Yes | Yes |
 | gpt-5.1-codex-mini | No | No | No | low-high | No | No | Yes |
 | gpt-realtime-* | N/A | N/A | N/A | N/A | N/A | N/A | N/A |
+
+*GPT-5.4 items marked with asterisk are estimated based on GPT-5.2 patterns, not yet independently confirmed.
 
 ### 1.4 Prompt Caching (OpenAI)
 
@@ -343,8 +353,8 @@ Available on Gemini 3.x models.
 | **Middle Level** | `low`, `medium` | `medium` | `medium` |
 | **Default Level** | `medium` | `high` | `high` |
 | **Highest Level** | `high`, `xhigh` | `high`, `max` | `high` |
-| **Exclusive Top Tier** | `xhigh` (5.2, 5.2 Pro, Codex) | `max` (Opus 4.6 only) | -- |
-| **No Thinking** | `none` (GPT-5.2 only) | Omit thinking param | Omit or set `low` |
+| **Exclusive Top Tier** | `xhigh` (5.4, 5.4 Pro, 5.2, Codex) | `max` (Opus 4.6 only) | -- |
+| **No Thinking** | `none` (GPT-5.4, GPT-5.2) | Omit thinking param | Omit or set `low` |
 
 ### 4.2 Cross-Vendor Structured Output Comparison
 
@@ -416,8 +426,12 @@ Higher reasoning levels generate more internal "thinking tokens" that consume ou
 | Model | Input | Cached | Output | Notes |
 |-------|-------|--------|--------|-------|
 | **OpenAI** | | | | |
-| GPT-5.2 | $1.75 | $0.175 | $14.00 | |
-| GPT-5.2 Chat Latest | $1.75 | $0.175 | $14.00 | |
+| GPT-5.4 | $2.50 | $0.25 | $15.00 | NEW March 5, 2026 |
+| GPT-5.4 (>272K) | $5.00 | -- | $22.50 | Long context tier |
+| GPT-5.4 Pro | $30.00 | -- | $180.00 | Responses API only (estimated) |
+| GPT-5.4 Pro (>272K) | $60.00 | -- | $270.00 | Long context tier |
+| GPT-5.2 | $1.75 | $0.175 | $14.00 | Retiring June 5, 2026 |
+| GPT-5.2 Chat Latest | $1.75 | $0.175 | $14.00 | Retiring June 3, 2026 |
 | GPT-5.2 Codex | $1.75 | $0.175 | $14.00 | |
 | GPT-5.2 Pro | $21.00 | -- | $168.00 | Responses API only |
 | GPT-5.3 Codex | $1.75 | $0.175 | $14.00 | |
@@ -476,6 +490,12 @@ Higher reasoning levels generate more internal "thinking tokens" that consume ou
 7. **Realtime models are WebSocket only.** Attempting HTTP/REST calls to `gpt-realtime-*` models will fail. These require a WebSocket connection.
 
 8. **Cached audio tokens for Realtime.** Cached audio input is $0.40/1M (vs $32.00 uncached) -- an 80x discount. Design voice agents to take advantage of this.
+
+9. **GPT-5.4 replaces GPT-5.2.** `gpt-5.4` was released March 5, 2026. `gpt-5.2` is retiring June 5, 2026. GPT-5.4 has the same reasoning effort levels (none-xhigh) but a larger context window (1.05M vs 400K) and higher pricing ($2.50/$15 vs $1.75/$14).
+
+10. **GPT-5.4 long context pricing tier at 272K.** Prompts exceeding 272,000 input tokens are charged at 2x input and 1.5x output for the entire session. This is a new pricing structure not present in GPT-5.2.
+
+11. **Tool Search is optional.** GPT-5.4 introduces a new `tool_search` tool type for efficient tool management (47% token reduction). It is additive -- existing tool calling works unchanged. Register tools with `defer_loading: true` to use this feature.
 
 ### 7.2 Anthropic Gotchas
 
@@ -537,6 +557,8 @@ Higher reasoning levels generate more internal "thinking tokens" that consume ou
 
 | Vendor | Model | API Model ID |
 |--------|-------|-------------|
+| OpenAI | GPT-5.4 (Thinking) | `gpt-5.4` |
+| OpenAI | GPT-5.4 Pro | `gpt-5.4-pro` |
 | OpenAI | GPT-5.2 (Thinking) | `gpt-5.2` |
 | OpenAI | GPT-5.2 (Instant) | `gpt-5.2-chat-latest` |
 | OpenAI | GPT-5.2 Pro | `gpt-5.2-pro` |
