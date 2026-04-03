@@ -71,9 +71,20 @@ An adversarial feedback loop that hardens plans through iterative critique and r
 
 ### Maximum Iterations
 
-- **Default:** 3 iterations
-- **Hard cap:** 5 iterations (even if user requests more)
+- **Default:** 10 iterations
 - If the plan still has CRITICAL issues after max iterations, stop and surface the unresolved issues to the user for manual intervention
+
+### Early Stop
+
+The loop should exit early when the RTA signals convergence. The RTA is instructed to include a `## Convergence Assessment` section in its output with one of:
+
+| Signal | Meaning |
+|--------|---------|
+| **CONTINUE** | Substantive issues remain; another iteration is warranted |
+| **DIMINISHING** | Only minor or stylistic issues remain; another pass is unlikely to find anything critical |
+| **CONVERGED** | The plan is solid; no meaningful issues remain to raise |
+
+If the RTA signals **CONVERGED** or **DIMINISHING**, the main thread should still triage the findings from that iteration, but then **exit the loop** after triage — do not spawn another RTA iteration. This prevents grinding through 10 iterations when the plan hardened after 2.
 
 ## Detailed Steps
 
@@ -85,7 +96,7 @@ Locate the plan to be hardened. Ask the user if ambiguous.
 Inputs needed:
 - Plan location: file path (e.g., docs/research/auth-comparison.md) OR "in conversation context"
 - Focus areas (optional): specific sections or concerns to prioritize
-- Max iterations (optional): 1-5, default 3
+- Max iterations (optional): 1-10, default 10
 ```
 
 ### Step 1: Spawn Red Team Analyst
@@ -118,6 +129,14 @@ Review this plan. This is iteration {N} of the red-team loop.
 
 Focus your review on NEW issues or issues that the revisions may have introduced.
 Do NOT re-raise findings that were already evaluated and dismissed with reasoning.
+
+## Convergence Assessment
+After your findings, include a `## Convergence Assessment` section with one of:
+- **CONTINUE** — if substantive issues remain that warrant another iteration
+- **DIMINISHING** — if only minor or stylistic issues remain and another pass is unlikely to surface anything critical
+- **CONVERGED** — if the plan is solid and you have no meaningful issues left to raise
+
+Be honest. Your value is in finding real problems, not in manufacturing disagreement to fill iterations.
 ```
 
 ### Step 2: Triage RTA Findings
@@ -192,6 +211,7 @@ Dismissed findings:
 **Exit conditions (ANY of these):**
 - RTA verdict is **PASS** or **CONDITIONAL PASS** with no CRITICAL/HIGH issues remaining
 - Main thread triage results in **zero ACCEPT** findings (all dismissed or acknowledged) — the plan is already solid against the RTA's attacks
+- **RTA convergence signal is CONVERGED or DIMINISHING** — the RTA itself signals there's nothing substantial left to attack. Triage the current iteration's findings, then exit.
 - **Max iterations reached** — summarize status and surface any unresolved concerns
 
 **Continue condition:**
@@ -231,7 +251,8 @@ If the plan lives in a file, append the Red Team Loop summary to the document.
 | Accepting all RTA findings | RTA hallucinates issues; blind acceptance degrades plans | Verify each finding against actual code/docs |
 | Dismissing all RTA findings | Defeats the purpose of the loop | Each dismissal needs documented evidence |
 | Skipping triage | Creates a rubber-stamp process | Triage is the most important step |
-| Running 5+ iterations | Diminishing returns; indicates deeper problems | Stop at 3-5, escalate unresolved issues to user |
+| Ignoring RTA convergence signals | Wastes iterations when the plan is already solid | If RTA signals CONVERGED or DIMINISHING, exit after triage |
+| Manufacturing disagreement | RTA invents issues to justify more iterations | RTA should signal CONVERGED honestly when the plan is solid |
 | Not documenting dismissed findings | RTA will re-raise them next iteration | Document dismissals so RTA can focus on new issues |
 | Changing the plan without changelog | Loses audit trail of what improved and why | Always record what changed and why |
 | Letting RTA re-litigate dismissed findings | Wastes iterations on settled questions | Include dismissed findings in RTA context |
